@@ -10,8 +10,12 @@ model = GigaChat(
 )
 
 
-async def send_message(type_of_work):
-    global answer, messages
+async def send_message(type_of_work, botRole):
+    messages = []
+    print(botRole)
+    answer = "А вот и не вышло"
+    if botRole != '':
+        messages.append(SystemMessage(content=botRole))
     if type_of_work == 'analyze':
         messages.append(SystemMessage(content='Ты бот аналитик, который выполняет функцию '
                                               'анализировать и логически рассуждать'))
@@ -28,10 +32,4 @@ async def send_message(type_of_work):
         messages.append(SystemMessage(content='ты просто чат-бот'))
         answer = 'dada-ya obschauys'
     print(messages)
-
-    messages = []
     return answer
-
-
-messages = [
-]
