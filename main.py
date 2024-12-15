@@ -5,7 +5,8 @@ from aiogram import Bot, Dispatcher
 from config_data.config import load_config, config
 from database.orm import create_tables
 from dialogs import payment_dialog
-from handlers import user_handlers, settings, bot_mode, bot_role
+from handlers import user_handlers, settings, bot_mode, bot_role, admin
+from middlewares.middleware import BanCheckMiddleware
 
 
 async def main() -> None:
@@ -25,6 +26,8 @@ async def main() -> None:
 
     # Регистриуем роутеры в диспетчере
     dp.include_router(user_handlers.router)
+    dp.message.outer_middleware(BanCheckMiddleware())
+    dp.include_router(admin.router)
     dp.include_router(settings.router)
     dp.include_router(bot_mode.router)
     dp.include_router(bot_role.router)

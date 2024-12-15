@@ -10,26 +10,34 @@ model = GigaChat(
 )
 
 
-async def send_message(type_of_work, botRole):
+async def send_message(type_of_work, botRole, message):
     messages = []
     print(botRole)
-    answer = "А вот и не вышло"
     if botRole != '':
         messages.append(SystemMessage(content=botRole))
     if type_of_work == 'analyze':
         messages.append(SystemMessage(content='Ты бот аналитик, который выполняет функцию '
                                               'анализировать и логически рассуждать'))
-        answer = 'dada-ya analizituyu'
+        messages.append(HumanMessage(content=message))
+        res = model.invoke(messages)
+        messages.append(res)
     elif type_of_work == 'brainStorm':
         messages.append(SystemMessage(content='Ты бот аналитик, который выполняет функцию '
                                               'анализировать и логически рассуждать'))
-        answer = 'dada-ya shturmovik'
+        messages.append(HumanMessage(content=message))
+        res = model.invoke(messages)
+        messages.append(res)
     elif type_of_work == 'genIdeas':
         messages.append(SystemMessage(content='Ты бот, который генерирует идеи '
                                               'твоя задача генерировать идеи в ответ на запрос'))
-        answer = 'dada-ya generiruyu'
+        messages.append(HumanMessage(content=message))
+        res = model.invoke(messages)
+        messages.append(res)
     elif type_of_work == 'chat':
         messages.append(SystemMessage(content='ты просто чат-бот'))
-        answer = 'dada-ya obschauys'
-    print(messages)
-    return answer
+        messages.append(HumanMessage(content=message))
+        res = model.invoke(messages)
+        messages.append(res)
+    print(messages[-1].content)
+    return messages[-1].content
+

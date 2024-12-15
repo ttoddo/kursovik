@@ -12,7 +12,7 @@ from keyboards.keyboards import register_keyboard, start_keyboard, ButtonsCallba
 from middlewares.middleware import BanCheckMiddleware
 
 router = Router()
-router.message.middleware(BanCheckMiddleware())
+#router.message.middleware(BanCheckMiddleware())
 
 
 @router.message(CommandStart())
@@ -39,47 +39,6 @@ async def main_menu(message: Message):
         await make_admin(message.from_user.id)
         await message.answer(text='Вы админ! Привет владельцу')
     else: print('net')
-
-
-@router.message(lambda message: message.text == 'Режим администратора')
-async def admin_panel(message: Message):
-    if await check_user(user_id=message.from_user.id):
-        if await check_user_admin(user_id=message.from_user.id):
-            await message.answer(text='Вы в панели администратора! Выберите действие', reply_markup=admin_keyboard)
-            return
-        else:
-            await message.answer('Вы не админ!')
-    else:
-        await message.answer('Вас нет в базе!')
-
-
-@router.callback_query(ButtonsCallbackFactory.filter(F.status == 'ban'))
-async def main_menu(query: CallbackQuery, state: FSMContext):
-    await query.message.answer(text='Введите id пользователя, которого хотите забанить', reply_markup=None)
-    await state.set_state(Admin.ban)
-    await query.message.delete()
-
-
-@router.message(Admin.ban)
-async def user_ban(message: Message, state: FSMContext):
-    await ban_user(int(message.text))
-    await message.answer(text='Пользователь успешно забанен')
-    await state.set_state(Chat_mode.chat)
-
-
-
-@router.callback_query(ButtonsCallbackFactory.filter(F.status == 'unban'))
-async def main_menu(query: CallbackQuery, state: FSMContext):
-    await query.message.answer(text='Введите id пользователя, которого хотите разбанить', reply_markup=None)
-    await state.set_state(Admin.unban)
-    await query.message.delete()
-
-
-@router.message(Admin.unban)
-async def user_unban(message: Message, state: FSMContext):
-    await unban_user(int(message.text))
-    await message.answer(text='Пользователь успешно разбанен')
-    await state.set_state(Chat_mode.chat)
 
 
 @router.callback_query(ButtonsCallbackFactory.filter(F.status == 'menu'))
