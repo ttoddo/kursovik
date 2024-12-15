@@ -3,39 +3,42 @@ from environs import Env
 
 
 @dataclass
-class DatabaseConfig:
-    database: str         # Название базы данных
-    db_host: str          # URL-адрес базы данных
-    db_user: str          # Username пользователя базы данных
-    db_password: str      # Пароль к базе данных
+class TgBot:
+    token: str  # Токен для доступа к телеграм-боту
+    admin_id: int  # ID админа
 
 
 @dataclass
-class TgBot:
-    token: str            # Токен для доступа к телеграм-боту
-    admin_ids: list[int]  # Список id администраторов бота
+class GigaBot:
+    key: str  # Ключ авторизации бота
+
+
+@dataclass
+class DataBase:
+    DB_HOST: str  # Хост БД
+    DB_PORT: int  # Порт БД, искать в документации конкретной БД
+    DB_USER: str  # Имя пользователя БД
+    DB_PASS: str  # Пароль пользователя
+    DB_NAME: str  # Название БД
+
+    def url(self):
+        return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
 
 @dataclass
 class Config:
+
     tg_bot: TgBot
-    db: DatabaseConfig
+    giga: GigaBot
+    db: DataBase
 
 
-def load_config(path: str | None = None) -> Config:
-
-    env: Env = Env()
+def load_config(path: str | None = None) -> Config:  # Функция загрузки пользователя
+    env = Env()
     env.read_env(path)
+    return Config(tg_bot=TgBot(token=env('BOT_TOKEN'), admin_id=env('ADMIN_ID')),
+                  giga=GigaBot(key=env("AUTH_KEY")),
+                  db=DataBase(env("DB_HOST"), env("DB_PORT"), env("DB_USER"), env("DB_PASS"), env("DB_NAME")))
 
-    return Config(
-        tg_bot=TgBot(
-            token=env('BOT_TOKEN'),
-            admin_ids=list(map(int, env.list('ADMIN_ID')))
-        ),
-        db=DatabaseConfig(
-            database=env('DATABASE'),
-            db_host=env('DB_HOST'),
-            db_user=env('DB_USER'),
-            db_password=env('DB_PASSWORD')
-        )
-    )
+
+config: Config = load_config()

@@ -1,6 +1,5 @@
-from aiogram import Dispatcher
-from aiogram.types import (KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove)
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+from aiogram.types import (KeyboardButton, ReplyKeyboardMarkup)
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 from aiogram.filters.callback_data import CallbackData
 
@@ -8,20 +7,22 @@ from aiogram.filters.callback_data import CallbackData
 class ButtonsCallbackFactory(CallbackData, prefix='any'):
     status: str
 
+
 menu_btn = InlineKeyboardButton(text='Выйти в главное менью',
-                                    callback_data=ButtonsCallbackFactory(status='menu').pack())
+                                callback_data=ButtonsCallbackFactory(status='menu').pack())
 
 kb_builderStart = ReplyKeyboardBuilder()
-kb_builderReg = InlineKeyboardBuilder()
+kb_builderReg = ReplyKeyboardBuilder()
 kb_builderSet = InlineKeyboardBuilder()
 kb_builderMode = InlineKeyboardBuilder()
+kb_builderAdm = InlineKeyboardBuilder()
 
-register_btn = InlineKeyboardButton(text='Зарегистрироваться',
-                                    callback_data=ButtonsCallbackFactory(status='register').pack())
+register_btn = KeyboardButton(text='Зарегистрироваться',
+                              callback_data=ButtonsCallbackFactory(status='register').pack())
 
 kb_builderReg.row(register_btn, width=2)
-#клавиатура регистрации
-register_keyboard: InlineKeyboardMarkup = kb_builderReg.as_markup(
+# клавиатура регистрации
+register_keyboard: ReplyKeyboardMarkup = kb_builderReg.as_markup(
     resize_keyboard=True,
     one_time_keyboard=True
 )
@@ -30,10 +31,12 @@ start_btn1 = KeyboardButton(text='Давай')
 start_btn2 = KeyboardButton(text='Не стоит')
 start_btn3 = KeyboardButton(text='Настройки')
 start_btn4 = KeyboardButton(text='Режим администратора')
+start_btn5 = KeyboardButton(text='Поддержать разработчика')
 
 kb_builderStart.row(start_btn1, start_btn2, width=2)
 kb_builderStart.row(start_btn3, start_btn4, width=2)
-#начальная клавиатура
+kb_builderStart.row(start_btn5, width=1)
+# начальная клавиатура
 start_keyboard: ReplyKeyboardMarkup = kb_builderStart.as_markup(
     resize_keyboard=True,
     one_time_keyboard=True
@@ -44,11 +47,22 @@ setting_btn1 = InlineKeyboardButton(text='Выбрать режим',
 setting_btn2 = InlineKeyboardButton(text='Задать модель поведения',
                                     callback_data=ButtonsCallbackFactory(status='give role').pack())
 
-
 kb_builderSet.row(setting_btn1, setting_btn2, menu_btn, width=2)
 
-#Клавиатура настроек
+# Клавиатура настроек
 setting_keyboard: InlineKeyboardMarkup = kb_builderSet.as_markup(
+    resize_keyboard=True,
+    one_time_keyboard=True
+)
+adm_btn1 = InlineKeyboardButton(text='Забанить пользователя',
+                                callback_data=ButtonsCallbackFactory(status='ban').pack())
+adm_btn2 = InlineKeyboardButton(text='Разбанить пользователя',
+                                callback_data=ButtonsCallbackFactory(status='unban').pack())
+
+kb_builderAdm.row(adm_btn1, adm_btn2, width=2)
+kb_builderAdm.row(menu_btn, width=2)
+
+admin_keyboard: InlineKeyboardMarkup = kb_builderAdm.as_markup(
     resize_keyboard=True,
     one_time_keyboard=True
 )
@@ -63,9 +77,9 @@ choose_mode4 = InlineKeyboardButton(text='Просто чат',
                                     callback_data=ButtonsCallbackFactory(status='chat').pack())
 
 kb_builderMode.row(choose_mode1, choose_mode2, width=2)
-kb_builderMode.row(choose_mode3, choose_mode4,  width=2)
-kb_builderMode.row(menu_btn,  width=1)
-#Клавиатура выбора режима
+kb_builderMode.row(choose_mode3, choose_mode4, width=2)
+kb_builderMode.row(menu_btn, width=1)
+# Клавиатура выбора режима
 choose_mode_keyboard: InlineKeyboardMarkup = kb_builderMode.as_markup(
     register_keyboard=True,
     one_time_keyboard=True

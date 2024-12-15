@@ -1,11 +1,21 @@
 from aiogram.fsm.state import StatesGroup, State
 
 
+class PaymentDialog(StatesGroup):
+    start = State()
+
+
 class Chat_mode(StatesGroup):
     analyze = State()
     brainStorm = State()
     generate = State()
     chat = State()
+
+
+class Admin(StatesGroup):
+    ban = State()
+    unban = State()
+    idle = State()
 
 
 class Take_role(StatesGroup):
