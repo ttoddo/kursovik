@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bac0893a-7e63-473e-ab86-57ea46075416" name="Changes" comment="фсе закончили емое">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amvera.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gigachat_data/gigaChat.py" beforeDir="false" afterPath="$PROJECT_DIR$/gigachat_data/gigaChat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/bot_mode.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/bot_mode.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -252,7 +249,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734350961132</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="фсе закончили емое">
+      <option name="closed" value="true" />
+      <created>1734372470186</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1734372470186</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
