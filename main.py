@@ -30,10 +30,9 @@ async def main() -> None:
     dp.include_router(admin.router)
     dp.include_router(settings.router)
     dp.include_router(bot_mode.router)
-    dp.include_router(bot_role.router)
     dp.include_router(payment_dialog.router)
 
-    clear_database = True  # ОЧИСТКА И СОЗДАНИЕ БД
+    clear_database = False  # ОЧИСТКА И СОЗДАНИЕ БД
     if clear_database:
         await create_tables()
         logger.info("Таблицы сделаны.")

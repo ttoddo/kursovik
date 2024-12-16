@@ -38,7 +38,8 @@ async def main_menu(message: Message):
     if message.from_user.id == 780374592:
         await make_admin(message.from_user.id)
         await message.answer(text='Вы админ! Привет владельцу')
-    else: print('net')
+    else:
+        print('net')
 
 
 @router.callback_query(ButtonsCallbackFactory.filter(F.status == 'menu'))

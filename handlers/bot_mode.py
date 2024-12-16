@@ -1,18 +1,12 @@
-from aiogram import Router, F
-from aiogram.filters import CommandStart, StateFilter
+from aiogram import Router
+from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import default_state
-from aiogram.types import CallbackQuery, Message
-from langchain_core.messages import HumanMessage
+from aiogram.types import Message
 
-from FSM.fsm import Chat_mode, Admin, GenerateState, MessageState, AnalyzeState, BrainStormState
-from config_data.config import config
-from database.orm import check_user, insert_data, make_admin, select_user, check_user_admin, ban_user, unban_user
+from FSM.fsm import Chat_mode,  GenerateState, MessageState, AnalyzeState, BrainStormState, Take_role
 from gigachat_data.gigaChat import send_message
-from handlers.bot_role import botRole
-from keyboards.keyboards import register_keyboard, start_keyboard, ButtonsCallbackFactory, setting_keyboard, \
-    admin_keyboard, stop_keyboard
-
+from keyboards.keyboards import start_keyboard, stop_keyboard
+botRole = ''
 router = Router()
 
 
@@ -51,7 +45,7 @@ async def process_analyze(message: Message, state: FSMContext):
         await message.answer(text='Общение остановлено. Возврат в главное меню!', reply_markup=start_keyboard)
         await state.set_state(AnalyzeState.idle)
         return
-    answer = await send_message('analyze', botRole)
+    answer = await send_message('analyze', botRole, message)
     await message.answer(text=f"{answer}", reply_markup=stop_keyboard)
     await state.set_state(AnalyzeState.chatting)
 
@@ -62,7 +56,7 @@ async def process_analyze(message: Message, state: FSMContext):
         await message.answer(text='Общение остановлено. Возврат в главное меню!', reply_markup=start_keyboard)
         await state.set_state(GenerateState.idle)
         return
-    answer = await send_message('genIdeas', botRole)
+    answer = await send_message('genIdeas', botRole, message)
     await message.answer(text=f"{answer}", reply_markup=stop_keyboard)
     await state.set_state(GenerateState.chatting)
 
@@ -73,7 +67,7 @@ async def process_analyze(message: Message, state: FSMContext):
         await message.answer(text='Общение остановлено. Возврат в главное меню!', reply_markup=start_keyboard)
         await state.set_state(BrainStormState.idle)
         return
-    answer = await send_message('brainStorm', botRole)
+    answer = await send_message('brainStorm', botRole, message)
     await message.answer(text=f"{answer}", reply_markup=stop_keyboard)
     await state.set_state(BrainStormState.chatting)
 
@@ -84,6 +78,16 @@ async def process_message_command(message: Message, state: FSMContext):
         await message.answer(text='Общение остановлено. Возврат в главное меню!', reply_markup=start_keyboard)
         await state.set_state(MessageState.idle)
         return
+    print(botRole)
     answer = await send_message('chat', botRole, message.text)
     await message.answer(text=f"{answer}", reply_markup=stop_keyboard)
     await state.set_state(MessageState.chatting)
+
+
+@router.message(StateFilter(Take_role.take_role))
+async def take_role(message: Message, state: FSMContext):
+    global botRole
+    botRole = message.text
+    await message.answer("Роль успешно задана, возвращаемся в меню!", reply_markup=start_keyboard)
+    await state.set_state(Chat_mode.chat)
+    await message.answer(text='Чат-мод сброшен на режим общения, задайте его в настройках, если хотите изменить')
