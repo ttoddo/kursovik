@@ -45,7 +45,7 @@ async def process_analyze(message: Message, state: FSMContext):
         await message.answer(text='Общение остановлено. Возврат в главное меню!', reply_markup=start_keyboard)
         await state.set_state(AnalyzeState.idle)
         return
-    answer = await send_message('analyze', botRole, message)
+    answer = await send_message('analyze', botRole, message.text)
     await message.answer(text=f"{answer}", reply_markup=stop_keyboard)
     await state.set_state(AnalyzeState.chatting)
 
@@ -56,7 +56,7 @@ async def process_analyze(message: Message, state: FSMContext):
         await message.answer(text='Общение остановлено. Возврат в главное меню!', reply_markup=start_keyboard)
         await state.set_state(GenerateState.idle)
         return
-    answer = await send_message('genIdeas', botRole, message)
+    answer = await send_message('genIdeas', botRole, message.text)
     await message.answer(text=f"{answer}", reply_markup=stop_keyboard)
     await state.set_state(GenerateState.chatting)
 
@@ -67,7 +67,7 @@ async def process_analyze(message: Message, state: FSMContext):
         await message.answer(text='Общение остановлено. Возврат в главное меню!', reply_markup=start_keyboard)
         await state.set_state(BrainStormState.idle)
         return
-    answer = await send_message('brainStorm', botRole, message)
+    answer = await send_message('brainStorm', botRole, message.text)
     await message.answer(text=f"{answer}", reply_markup=stop_keyboard)
     await state.set_state(BrainStormState.chatting)
 

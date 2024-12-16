@@ -16,7 +16,8 @@ async def mode_menu(query: CallbackQuery):
 
 @router.callback_query(ButtonsCallbackFactory.filter(F.status == 'give role'))
 async def set_role(query: CallbackQuery, state: FSMContext):
-    await query.message.answer(text='Задайте роль боту: ', reply_markup=start_keyboard)
+    await query.message.answer(text='Задайте роль боту(пишите развернуто иначе нейросеть не захочет её принимать): ',
+                               reply_markup=start_keyboard)
     await query.message.delete()
     await state.set_state(Take_role.take_role)
 
